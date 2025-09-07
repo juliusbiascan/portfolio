@@ -168,11 +168,12 @@ export default function Page() {
               </div>
             </div>
           </BlurFade>
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 max-w-[800px] mx-auto">
+          <div className="columns-1 gap-3 sm:columns-2 max-w-[800px] mx-auto space-y-3">
             {DATA.projects.map((project, id) => (
               <BlurFade
                 key={project.title}
                 delay={BLUR_FADE_DELAY * 14 + id * 0.05}
+                className="break-inside-avoid mb-3"
               >
                 <ProjectCard
                   href={project.href}
