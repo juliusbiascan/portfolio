@@ -1,0 +1,370 @@
+---
+title: "Essential Developer Productivity Tools for 2024"
+publishedAt: "2024-11-15"
+summary: "A curated list of tools and extensions that can significantly boost your development productivity and workflow efficiency."
+---
+
+As developers, we're always looking for ways to work more efficiently. Over the years, I've discovered numerous tools and techniques that have dramatically improved my productivity. Let me share the essential tools that have become indispensable in my daily workflow.
+
+## Code Editors and IDEs
+
+### 1. VS Code Extensions
+
+```json
+// Essential VS Code extensions
+{
+  "recommendations": [
+    "bradlc.vscode-tailwindcss",
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-typescript-next",
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "ms-vscode.vscode-json",
+    "redhat.vscode-yaml",
+    "ms-vscode.vscode-eslint"
+  ]
+}
+```
+
+### 2. Keybindings and Shortcuts
+
+```json
+// Custom keybindings for efficiency
+[
+  {
+    "key": "ctrl+shift+p",
+    "command": "workbench.action.quickOpen"
+  },
+  {
+    "key": "ctrl+`",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "ctrl+shift+`",
+    "command": "workbench.action.terminal.new"
+  }
+]
+```
+
+## Terminal and Shell Tools
+
+### 1. Modern Terminal Setup
+
+```bash
+# Install Oh My Zsh for better shell experience
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+# Essential plugins
+plugins=(
+  git
+  zsh-autosuggestions
+  zsh-syntax-highlighting
+  docker
+  node
+  npm
+)
+```
+
+### 2. Useful CLI Tools
+
+```bash
+# Install essential CLI tools
+npm install -g @commitlint/cli @commitlint/config-conventional
+npm install -g typescript ts-node nodemon
+npm install -g vercel netlify-cli
+
+# Git aliases for efficiency
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.st status
+git config --global alias.unstage 'reset HEAD --'
+```
+
+## Package Managers and Build Tools
+
+### 1. Modern Package Management
+
+```json
+// package.json with efficient scripts
+{
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  }
+}
+```
+
+### 2. Build Optimization
+
+```javascript
+// next.config.js optimizations
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    optimizePackageImports: ["@radix-ui/react-icons"],
+  },
+  images: {
+    formats: ["image/webp", "image/avif"],
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
+};
+
+module.exports = nextConfig;
+```
+
+## Development Workflow
+
+### 1. Git Hooks with Husky
+
+```json
+// package.json
+{
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
+    "*.{json,md}": ["prettier --write"]
+  }
+}
+```
+
+### 2. Environment Management
+
+```bash
+# .env.example
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+DATABASE_URL=postgresql://user:password@localhost:5432/dbname
+NEXTAUTH_SECRET=your-secret-key
+NEXTAUTH_URL=http://localhost:3000
+```
+
+## Code Quality Tools
+
+### 1. ESLint Configuration
+
+```javascript
+// eslint.config.js
+module.exports = {
+  extends: [
+    "next/core-web-vitals",
+    "@typescript-eslint/recommended",
+    "prettier",
+  ],
+  rules: {
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "prefer-const": "error",
+    "no-var": "error",
+  },
+};
+```
+
+### 2. TypeScript Configuration
+
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["dom", "dom.iterable", "es6"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
+  }
+}
+```
+
+## Testing and Quality Assurance
+
+### 1. Testing Setup
+
+```javascript
+// jest.config.js
+const nextJest = require("next/jest");
+
+const createJestConfig = nextJest({
+  dir: "./",
+});
+
+const customJestConfig = {
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  moduleNameMapping: {
+    "^@/(.*)$": "<rootDir>/$1",
+  },
+  testEnvironment: "jest-environment-jsdom",
+};
+
+module.exports = createJestConfig(customJestConfig);
+```
+
+### 2. Component Testing
+
+```tsx
+// __tests__/Button.test.tsx
+import { render, screen, fireEvent } from "@testing-library/react";
+import { Button } from "@/components/ui/button";
+
+describe("Button", () => {
+  it("renders correctly", () => {
+    render(<Button>Click me</Button>);
+    expect(screen.getByText("Click me")).toBeInTheDocument();
+  });
+
+  it("handles click events", () => {
+    const handleClick = jest.fn();
+    render(<Button onClick={handleClick}>Click me</Button>);
+
+    fireEvent.click(screen.getByText("Click me"));
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
+});
+```
+
+## Deployment and Monitoring
+
+### 1. CI/CD Pipeline
+
+```yaml
+# .github/workflows/ci.yml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run type-check
+      - run: npm run test
+      - run: npm run build
+```
+
+### 2. Performance Monitoring
+
+```tsx
+// lib/analytics.ts
+import { Analytics } from "@vercel/analytics/react";
+
+export function trackEvent(
+  eventName: string,
+  properties?: Record<string, any>
+) {
+  if (typeof window !== "undefined") {
+    // Track custom events
+    Analytics.track(eventName, properties);
+  }
+}
+
+// Usage in components
+export function ContactForm() {
+  const handleSubmit = () => {
+    trackEvent("contact_form_submitted", {
+      form_type: "contact",
+      timestamp: new Date().toISOString(),
+    });
+  };
+
+  return <form onSubmit={handleSubmit}>{/* Form content */}</form>;
+}
+```
+
+## Productivity Tips
+
+### 1. Keyboard Shortcuts
+
+```markdown
+Essential shortcuts for faster development:
+
+**VS Code:**
+
+- Ctrl+Shift+P: Command palette
+- Ctrl+P: Quick open
+- Ctrl+Shift+F: Search across files
+- Alt+Click: Multi-cursor
+- Ctrl+D: Select next occurrence
+
+**Browser DevTools:**
+
+- F12: Open DevTools
+- Ctrl+Shift+C: Element selector
+- Ctrl+R: Reload page
+- Ctrl+Shift+R: Hard reload
+```
+
+### 2. Code Snippets
+
+```json
+// Custom VS Code snippets
+{
+  "React Component": {
+    "prefix": "rfc",
+    "body": [
+      "import React from 'react';",
+      "",
+      "interface ${1:ComponentName}Props {",
+      "  $2",
+      "}",
+      "",
+      "export const ${1:ComponentName}: React.FC<${1:ComponentName}Props> = ({ $3 }) => {",
+      "  return (",
+      "    <div>",
+      "      $4",
+      "    </div>",
+      "  );",
+      "};"
+    ],
+    "description": "Create a React functional component"
+  }
+}
+```
+
+## Conclusion
+
+These tools and techniques have significantly improved my development workflow. The key is to start with the basics and gradually incorporate more advanced tools as you become comfortable with them.
+
+Remember, productivity isn't just about using the right tools—it's about developing good habits and maintaining a clean, organized workflow. Focus on tools that solve real problems in your daily work, and don't be afraid to customize them to fit your specific needs.
+
+What productivity tools have made the biggest impact on your development workflow? I'd love to hear about your favorite tools and techniques.

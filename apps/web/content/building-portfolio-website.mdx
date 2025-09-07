@@ -1,0 +1,345 @@
+---
+title: "Building a Modern Portfolio Website: A Complete Guide"
+publishedAt: "2024-11-20"
+summary: "Step-by-step guide to creating a professional portfolio website using modern web technologies, from design to deployment."
+---
+
+Creating a portfolio website is one of the best investments you can make in your career. It's your digital business card, your showcase of skills, and often the first impression potential employers or clients will have of your work. Let me walk you through the process of building a modern, professional portfolio website.
+
+## Planning Your Portfolio
+
+### 1. Define Your Goals
+
+Before writing a single line of code, ask yourself:
+
+- Who is your target audience?
+- What do you want to achieve with this portfolio?
+- What projects best represent your skills?
+- What's your unique value proposition?
+
+### 2. Content Strategy
+
+```markdown
+Essential sections for a developer portfolio:
+
+- Hero section with clear value proposition
+- About section with your story
+- Skills and technologies
+- Featured projects with case studies
+- Experience and education
+- Contact information
+- Blog (optional but valuable)
+```
+
+## Technology Stack
+
+For this portfolio, I chose a modern, performant stack:
+
+```json
+{
+  "framework": "Next.js 14",
+  "styling": "Tailwind CSS",
+  "components": "Radix UI + shadcn/ui",
+  "content": "MDX for blog posts",
+  "deployment": "Vercel",
+  "analytics": "Vercel Analytics"
+}
+```
+
+## Project Structure
+
+```
+portfolio/
+├── app/
+│   ├── page.tsx              # Homepage
+│   ├── about/
+│   │   └── page.tsx          # About page
+│   ├── projects/
+│   │   └── page.tsx          # Projects listing
+│   ├── blog/
+│   │   ├── page.tsx          # Blog listing
+│   │   └── [slug]/
+│   │       └── page.tsx      # Individual blog posts
+│   └── layout.tsx            # Root layout
+├── components/
+│   ├── ui/                   # Reusable UI components
+│   ├── sections/             # Page sections
+│   └── layout/               # Layout components
+├── content/                  # MDX blog posts
+├── data/                     # Static data
+└── public/                   # Static assets
+```
+
+## Building the Components
+
+### 1. Hero Section
+
+```tsx
+// components/sections/hero.tsx
+import { Button } from "@/components/ui/button";
+import { ArrowDown } from "lucide-react";
+
+export function Hero() {
+  return (
+    <section className="min-h-screen flex items-center justify-center">
+      <div className="text-center space-y-6">
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+          Hi, I'm <span className="text-primary">Your Name</span>
+        </h1>
+        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          Full-stack developer passionate about creating digital experiences
+          that make a difference.
+        </p>
+        <div className="flex gap-4 justify-center">
+          <Button size="lg">View My Work</Button>
+          <Button variant="outline" size="lg">
+            Get In Touch
+          </Button>
+        </div>
+        <div className="flex justify-center pt-8">
+          <ArrowDown className="h-6 w-6 animate-bounce" />
+        </div>
+      </div>
+    </section>
+  );
+}
+```
+
+### 2. Project Cards
+
+```tsx
+// components/project-card.tsx
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { ExternalLink, Github } from "lucide-react";
+
+interface Project {
+  title: string;
+  description: string;
+  technologies: string[];
+  liveUrl?: string;
+  githubUrl?: string;
+  image: string;
+}
+
+export function ProjectCard({ project }: { project: Project }) {
+  return (
+    <Card className="group hover:shadow-lg transition-shadow">
+      <CardHeader>
+        <div className="aspect-video bg-muted rounded-lg mb-4 overflow-hidden">
+          <img
+            src={project.image}
+            alt={project.title}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+          />
+        </div>
+        <CardTitle>{project.title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-muted-foreground mb-4">{project.description}</p>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {project.technologies.map((tech) => (
+            <Badge key={tech} variant="secondary">
+              {tech}
+            </Badge>
+          ))}
+        </div>
+        <div className="flex gap-2">
+          {project.liveUrl && (
+            <Button variant="outline" size="sm" asChild>
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <ExternalLink className="h-4 w-4 mr-2" />
+                Live Demo
+              </a>
+            </Button>
+          )}
+          {project.githubUrl && (
+            <Button variant="outline" size="sm" asChild>
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Github className="h-4 w-4 mr-2" />
+                Code
+              </a>
+            </Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+```
+
+## Content Management
+
+### 1. Blog with MDX
+
+```tsx
+// app/blog/[slug]/page.tsx
+import { getPost, getBlogPosts } from "@/data/blog";
+import { notFound } from "next/navigation";
+
+export async function generateStaticParams() {
+  const posts = await getBlogPosts();
+  return posts.map((post) => ({ slug: post.slug }));
+}
+
+export default async function BlogPost({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const post = await getPost(params.slug);
+
+  if (!post) {
+    notFound();
+  }
+
+  return (
+    <article className="prose dark:prose-invert max-w-4xl mx-auto">
+      <header className="mb-8">
+        <h1 className="text-4xl font-bold mb-4">{post.metadata.title}</h1>
+        <p className="text-muted-foreground">
+          {new Date(post.metadata.publishedAt).toLocaleDateString()}
+        </p>
+      </header>
+      <div dangerouslySetInnerHTML={{ __html: post.source }} />
+    </article>
+  );
+}
+```
+
+### 2. Data Management
+
+```tsx
+// data/projects.ts
+export const projects = [
+  {
+    title: "E-commerce Platform",
+    description:
+      "A full-stack e-commerce solution built with Next.js and Stripe.",
+    technologies: ["Next.js", "TypeScript", "Stripe", "PostgreSQL"],
+    liveUrl: "https://example-store.com",
+    githubUrl: "https://github.com/username/ecommerce",
+    image: "/projects/ecommerce.jpg",
+  },
+  // ... more projects
+];
+```
+
+## Performance Optimization
+
+### 1. Image Optimization
+
+```tsx
+import Image from "next/image";
+
+export function OptimizedImage({ src, alt, ...props }) {
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      placeholder="blur"
+      blurDataURL="data:image/jpeg;base64,..."
+      {...props}
+    />
+  );
+}
+```
+
+### 2. Code Splitting
+
+```tsx
+import dynamic from "next/dynamic";
+
+const HeavyComponent = dynamic(() => import("./HeavyComponent"), {
+  loading: () => <div>Loading...</div>,
+  ssr: false,
+});
+```
+
+## SEO and Analytics
+
+### 1. Metadata Configuration
+
+```tsx
+// app/layout.tsx
+export const metadata = {
+  title: "Your Name - Full Stack Developer",
+  description: "Portfolio of a passionate full-stack developer...",
+  openGraph: {
+    title: "Your Name - Full Stack Developer",
+    description: "Portfolio of a passionate full-stack developer...",
+    images: ["/og-image.jpg"],
+  },
+};
+```
+
+### 2. Analytics Integration
+
+```tsx
+// components/analytics.tsx
+import { Analytics } from "@vercel/analytics/react";
+
+export function AnalyticsProvider() {
+  return <Analytics />;
+}
+```
+
+## Deployment
+
+### 1. Vercel Deployment
+
+```json
+// vercel.json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "framework": "nextjs"
+}
+```
+
+### 2. Environment Variables
+
+```bash
+# .env.local
+NEXT_PUBLIC_GA_ID=your-google-analytics-id
+NEXT_PUBLIC_SITE_URL=https://yourdomain.com
+```
+
+## Best Practices
+
+### 1. Accessibility
+
+- Use semantic HTML
+- Implement proper ARIA labels
+- Ensure keyboard navigation
+- Test with screen readers
+
+### 2. Performance
+
+- Optimize images and assets
+- Implement proper caching
+- Use Core Web Vitals monitoring
+- Minimize bundle size
+
+### 3. Content Strategy
+
+- Keep content fresh and updated
+- Write case studies for major projects
+- Include testimonials if available
+- Maintain a consistent voice
+
+## Conclusion
+
+Building a portfolio website is an ongoing process. Start with the essentials, launch early, and iterate based on feedback and analytics. The most important thing is to showcase your work authentically and make it easy for visitors to understand your value proposition.
+
+Remember, your portfolio is not just about the code—it's about telling your story and demonstrating your problem-solving abilities. Focus on the impact of your work, not just the technologies you used.
+
+What aspects of portfolio development are you most interested in? I'd love to hear about your experiences and any challenges you've faced.

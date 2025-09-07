@@ -1,0 +1,305 @@
+---
+title: "TypeScript Tips and Tricks for Better Code"
+publishedAt: "2024-11-28"
+summary: "Advanced TypeScript patterns and techniques that can make your code more type-safe, maintainable, and developer-friendly."
+---
+
+TypeScript has become an essential tool for modern JavaScript development. Over the years, I've discovered numerous patterns and techniques that have significantly improved my code quality and developer experience. Let me share some of the most useful TypeScript tips and tricks.
+
+## Advanced Type Patterns
+
+### 1. Utility Types Mastery
+
+```typescript
+// Pick and Omit for precise type manipulation
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  password: string;
+  createdAt: Date;
+}
+
+// Create a type for user creation (without id and timestamps)
+type CreateUser = Omit<User, "id" | "createdAt">;
+
+// Create a type for user updates (all fields optional except id)
+type UpdateUser = Partial<Omit<User, "id">> & { id: string };
+
+// Create a public user type (without sensitive data)
+type PublicUser = Omit<User, "password">;
+```
+
+### 2. Conditional Types for Dynamic Behavior
+
+```typescript
+// Conditional type that changes based on input
+type ApiResponse<T> = T extends string
+  ? { message: T }
+  : T extends number
+    ? { count: T }
+    : { data: T };
+
+// Usage
+const stringResponse: ApiResponse<string> = { message: "Hello" };
+const numberResponse: ApiResponse<number> = { count: 42 };
+const objectResponse: ApiResponse<User> = { data: user };
+```
+
+### 3. Template Literal Types
+
+```typescript
+// Create type-safe event names
+type EventName = `on${Capitalize<string>}`;
+type ClickEvent = `on${Capitalize<"click">}`; // "onClick"
+
+// More complex example with API endpoints
+type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
+type ApiEndpoint<T extends string> = `/api/${T}`;
+type UserEndpoint = ApiEndpoint<"users">; // "/api/users"
+
+// Type-safe API client
+type ApiClient = {
+  [K in HttpMethod as Lowercase<K>]: <T>(url: string, data?: any) => Promise<T>;
+};
+```
+
+## Type Guards and Narrowing
+
+### 1. Custom Type Guards
+
+```typescript
+// Type guard for runtime type checking
+function isString(value: unknown): value is string {
+  return typeof value === "string";
+}
+
+function isUser(value: unknown): value is User {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "id" in value &&
+    "name" in value &&
+    "email" in value
+  );
+}
+
+// Usage with automatic type narrowing
+function processValue(value: unknown) {
+  if (isString(value)) {
+    // TypeScript knows value is string here
+    console.log(value.toUpperCase());
+  }
+
+  if (isUser(value)) {
+    // TypeScript knows value is User here
+    console.log(value.email);
+  }
+}
+```
+
+### 2. Discriminated Unions
+
+```typescript
+// Type-safe state management
+type LoadingState = {
+  status: "loading";
+};
+
+type SuccessState<T> = {
+  status: "success";
+  data: T;
+};
+
+type ErrorState = {
+  status: "error";
+  error: string;
+};
+
+type AsyncState<T> = LoadingState | SuccessState<T> | ErrorState;
+
+// Usage with exhaustive checking
+function handleState<T>(state: AsyncState<T>) {
+  switch (state.status) {
+    case "loading":
+      return "Loading...";
+    case "success":
+      return `Data: ${state.data}`;
+    case "error":
+      return `Error: ${state.error}`;
+    default:
+      // TypeScript ensures all cases are handled
+      const _exhaustive: never = state;
+      return _exhaustive;
+  }
+}
+```
+
+## Advanced Generic Patterns
+
+### 1. Constrained Generics
+
+```typescript
+// Generic with constraints
+interface Repository<T extends { id: string }> {
+  findById(id: string): Promise<T | null>;
+  save(entity: T): Promise<T>;
+  delete(id: string): Promise<void>;
+}
+
+// Usage
+class UserRepository implements Repository<User> {
+  async findById(id: string): Promise<User | null> {
+    // Implementation
+  }
+
+  async save(user: User): Promise<User> {
+    // Implementation
+  }
+
+  async delete(id: string): Promise<void> {
+    // Implementation
+  }
+}
+```
+
+### 2. Mapped Types for Transformations
+
+```typescript
+// Transform object properties
+type Optional<T> = {
+  [K in keyof T]?: T[K];
+};
+
+type Required<T> = {
+  [K in keyof T]-?: T[K];
+};
+
+type Readonly<T> = {
+  readonly [K in keyof T]: T[K];
+};
+
+// Custom transformation
+type ApiFields<T> = {
+  [K in keyof T as `api_${string & K}`]: T[K];
+};
+
+type UserApiFields = ApiFields<User>;
+// Results in: { api_id: string; api_name: string; api_email: string; ... }
+```
+
+## Error Handling Patterns
+
+### 1. Result Type Pattern
+
+```typescript
+// Type-safe error handling
+type Result<T, E = Error> =
+  | { success: true; data: T }
+  | { success: false; error: E };
+
+// Usage
+async function fetchUser(id: string): Promise<Result<User, string>> {
+  try {
+    const user = await api.getUser(id);
+    return { success: true, data: user };
+  } catch (error) {
+    return { success: false, error: "Failed to fetch user" };
+  }
+}
+
+// Type-safe usage
+const result = await fetchUser("123");
+if (result.success) {
+  // TypeScript knows result.data is User
+  console.log(result.data.name);
+} else {
+  // TypeScript knows result.error is string
+  console.error(result.error);
+}
+```
+
+## Performance and Optimization
+
+### 1. Lazy Types
+
+```typescript
+// Avoid expensive type computations
+type ExpensiveType<T> = T extends infer U
+  ? U extends any
+    ? { [K in keyof U]: U[K] }
+    : never
+  : never;
+
+// Use conditional types to defer computation
+type LazyType<T> = T extends any ? ExpensiveType<T> : never;
+```
+
+### 2. Branded Types for Type Safety
+
+```typescript
+// Prevent mixing up similar types
+type UserId = string & { readonly __brand: "UserId" };
+type ProductId = string & { readonly __brand: "ProductId" };
+
+function createUserId(id: string): UserId {
+  return id as UserId;
+}
+
+function createProductId(id: string): ProductId {
+  return id as ProductId;
+}
+
+// Usage prevents accidental mixing
+function getUser(id: UserId) {
+  // Implementation
+}
+
+const userId = createUserId("123");
+const productId = createProductId("456");
+
+getUser(userId); // ✅ Works
+getUser(productId); // ❌ TypeScript error
+```
+
+## Best Practices
+
+### 1. Use `as const` for Immutable Data
+
+```typescript
+// Infer literal types
+const colors = ["red", "green", "blue"] as const;
+type Color = (typeof colors)[number]; // 'red' | 'green' | 'blue'
+
+// Object with readonly properties
+const config = {
+  apiUrl: "https://api.example.com",
+  timeout: 5000,
+  retries: 3,
+} as const;
+```
+
+### 2. Leverage Type Inference
+
+```typescript
+// Let TypeScript infer return types when possible
+function createUser(name: string, email: string) {
+  return {
+    id: generateId(),
+    name,
+    email,
+    createdAt: new Date(),
+  };
+}
+
+// TypeScript infers the return type automatically
+type CreatedUser = ReturnType<typeof createUser>;
+```
+
+## Conclusion
+
+These TypeScript patterns have significantly improved my code quality and developer experience. The key is to start with the basics and gradually incorporate more advanced patterns as you become comfortable with the language.
+
+Remember, TypeScript is a tool to help you write better code, not an end in itself. Use these patterns when they add value, and don't over-engineer your types.
+
+What TypeScript patterns have you found most useful in your projects? I'd love to hear about your experiences and discoveries.
