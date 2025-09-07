@@ -44,28 +44,40 @@ export function ProjectCard({
   links,
   className,
 }: Props) {
+  const handleVideoClick = () => {
+    if (href) {
+      window.open(href, '_blank');
+    }
+  };
+
   return (
-    <Card className="group relative overflow-hidden border-0 bg-gradient-to-br from-background to-muted/10 hover:from-muted/20 hover:to-muted/30 transition-all duration-500 hover:shadow-xl hover:shadow-muted/20 hover:-translate-y-1 h-full">
+    <Card className="group relative overflow-hidden border-0 bg-gradient-to-br from-background to-muted/10 hover:from-muted/20 hover:to-muted/30 transition-all duration-500 hover:shadow-xl hover:shadow-muted/20 hover:-translate-y-1 h-fit">
       {/* Background gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       {/* Media Section */}
-      <div className="relative overflow-hidden">
-        <Link
-          href={href || "#"}
-          className={cn("block cursor-pointer", className)}
-        >
-          {video && (
+      <div
+        className="relative overflow-hidden cursor-pointer"
+        onClick={handleVideoClick}
+      >
+        {video && (
+          <div className="relative w-full h-48 bg-black">
             <video
               src={video}
-              autoPlay
               loop
               muted
               playsInline
-              className="w-full h-48 object-cover object-center transition-transform duration-500 group-hover:scale-105"
+              autoPlay
+              className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105"
             />
-          )}
-          {image && (
+
+            {/* Simple overlay for video preview */}
+            <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-colors duration-300" />
+          </div>
+        )}
+
+        {!video && image && (
+          <Link href={href || "#"} className={cn("block", className)}>
             <Image
               src={image}
               alt={title}
@@ -73,16 +85,21 @@ export function ProjectCard({
               height={300}
               className="w-full h-48 object-cover object-center transition-transform duration-500 group-hover:scale-105"
             />
-          )}
-          {!video && !image && (
-            <div className="w-full h-48 bg-gradient-to-br from-muted/50 to-muted/80 flex items-center justify-center">
-              <div className="text-4xl opacity-50">🚀</div>
-            </div>
-          )}
-        </Link>
+          </Link>
+        )}
 
-        {/* Hover overlay */}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+        {!video && !image && (
+          <Link href={href || "#"} className={cn("block", className)}>
+            <div className="w-full h-48 bg-gradient-to-br from-muted/50 to-muted/80 flex items-center justify-center group-hover:from-muted/60 group-hover:to-muted/90 transition-all duration-300">
+              <div className="text-4xl opacity-50 group-hover:opacity-70 transition-opacity duration-300">🚀</div>
+            </div>
+          </Link>
+        )}
+
+        {/* Hover overlay for non-video content */}
+        {!video && (
+          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+        )}
 
         {/* External link indicator */}
         {href && (
@@ -95,7 +112,7 @@ export function ProjectCard({
       </div>
 
       {/* Content Section */}
-      <div className="relative p-6 flex flex-col h-full">
+      <div className="relative p-6 flex flex-col">
         <CardHeader className="p-0 mb-4">
           <div className="space-y-3">
             <div className="flex items-start justify-between gap-3">
@@ -117,7 +134,7 @@ export function ProjectCard({
           </div>
         </CardHeader>
 
-        <CardContent className="flex-1 p-0">
+        <CardContent className="p-0">
           <div className="prose prose-sm max-w-full text-muted-foreground dark:prose-invert prose-headings:text-foreground prose-strong:text-foreground">
             <Markdown>
               {description}

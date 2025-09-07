@@ -18,12 +18,12 @@ export const DATA = {
     "Typescript",
     "Node.js",
     "Python",
-    "Go",
     "Postgres",
     "Docker",
     "Kubernetes",
     "Java",
-    "C++",
+    "C#",
+
   ],
   navbar: [
     { href: "/", icon: HomeIcon, label: "Home" },
@@ -68,9 +68,7 @@ export const DATA = {
       },
     },
   },
-
   work: [
-
     {
       company: "Mitre Media",
       href: "https://mitremedia.com/",
@@ -96,149 +94,89 @@ export const DATA = {
   ],
   projects: [
     {
-      title: "Chat Collect",
-      href: "https://chatcollect.com",
-      dates: "Jan 2024 - Feb 2024",
+      title: "Echo Support Agent",
+      href: "https://echo.juliusbiascan.me",
+      dates: "Sep 2025 - Present",
       active: true,
       description:
-        "With the release of the [OpenAI GPT Store](https://openai.com/blog/introducing-the-gpt-store), I decided to build a SaaS which allows users to collect email addresses from their GPT users. This is a great way to build an audience and monetize your GPT API usage.",
+        "Introducing Echo a B2B SaaS AI powered support platform inspired by Intercom, Crisp, and Zendesk.",
       technologies: [
-        "Next.js",
-        "Typescript",
-        "PostgreSQL",
-        "Prisma",
-        "TailwindCSS",
-        "Stripe",
+        "Next.js 15",
+        "React",
+        "Convex",
+        "Turborepo",
+        "Vapi",
+        "AWS",
         "Shadcn UI",
-        "Magic UI",
+        "Typescript",
       ],
       links: [
         {
           type: "Website",
-          href: "https://chatcollect.com",
+          href: "https://echo.juliusbiascan.me",
           icon: <Icons.globe className="size-3" />,
         },
       ],
       image: "",
       video:
-        "https://pub-83c5db439b40468498f97946200806f7.r2.dev/chat-collect.mp4",
+        "https://r2.juliusbiascan.me/echo-video.mp4",
     },
     {
-      title: "Magic UI",
-      href: "https://magicui.design",
-      dates: "June 2023 - Present",
+      title: "Paywall",
+      href: "https://paywall.juliusbiascan.me/",
+      dates: "Sep 2025 - Present",
       active: true,
       description:
-        "Designed, developed and sold animated UI components for developers.",
+        "This project is a modern finance management web application built with Next.js, TypeScript, and Tailwind CSS. It features user authentication, dashboard analytics, account and transaction management, category organization, and data visualization. The app uses Drizzle ORM for database interactions and provides a clean, responsive UI for tracking and",
       technologies: [
-        "Next.js",
-        "Typescript",
-        "PostgreSQL",
-        "Prisma",
-        "TailwindCSS",
-        "Stripe",
+        "Nextjs",
+        "React",
+        "Honojs",
+        "CSV Upload",
+        "Drizzle ORM",
+        "Neon DB",
         "Shadcn UI",
-        "Magic UI",
+        "Typescript",
       ],
       links: [
         {
           type: "Website",
-          href: "https://magicui.design",
+          href: "https://paywall.juliusbiascan.me/",
           icon: <Icons.globe className="size-3" />,
         },
         {
-          type: "Source",
-          href: "https://github.com/magicuidesign/magicui",
+          type: "Github",
+          href: "https://github.com/juliusbiascan/finance",
           icon: <Icons.github className="size-3" />,
-        },
-      ],
-      image: "",
-      video: "https://cdn.magicui.design/bento-grid.mp4",
-    },
-    {
-      title: "llm.report",
-      href: "https://llm.report",
-      dates: "April 2023 - September 2023",
-      active: true,
-      description:
-        "Developed an open-source logging and analytics platform for OpenAI: Log your ChatGPT API requests, analyze costs, and improve your prompts.",
-      technologies: [
-        "Next.js",
-        "Typescript",
-        "PostgreSQL",
-        "Prisma",
-        "TailwindCSS",
-        "Shadcn UI",
-        "Magic UI",
-        "Stripe",
-        "Cloudflare Workers",
-      ],
-      links: [
-        {
-          type: "Website",
-          href: "https://llm.report",
-          icon: <Icons.globe className="size-3" />,
-        },
-        {
-          type: "Source",
-          href: "https://github.com/juliusbiascan/llm.report",
-          icon: <Icons.github className="size-3" />,
-        },
-      ],
-      image: "",
-      video: "https://cdn.llm.report/openai-demo.mp4",
-    },
-    {
-      title: "Automatic Chat",
-      href: "https://automatic.chat",
-      dates: "April 2023 - March 2024",
-      active: true,
-      description:
-        "Developed an AI Customer Support Chatbot which automatically responds to customer support tickets using the latest GPT models.",
-      technologies: [
-        "Next.js",
-        "Typescript",
-        "PostgreSQL",
-        "Prisma",
-        "TailwindCSS",
-        "Shadcn UI",
-        "Magic UI",
-        "Stripe",
-        "Cloudflare Workers",
-      ],
-      links: [
-        {
-          type: "Website",
-          href: "https://automatic.chat",
-          icon: <Icons.globe className="size-3" />,
         },
       ],
       image: "",
       video:
-        "https://pub-83c5db439b40468498f97946200806f7.r2.dev/automatic-chat.mp4",
+        "https://r2.juliusbiascan.me/paywall.mp4",
     },
+
   ],
   hackathons: [
     {
-      title: "Hack Western 5",
-      dates: "November 23rd - 25th, 2018",
-      location: "London, Ontario",
+      title: "Alos Elementary School E-Learning Project",
+      dates: "September 2023",
+      location: "Alos Elementary School",
       description:
         "Developed a mobile application which delivered bedtime stories to children using augmented reality.",
       image:
-        "https://pub-83c5db439b40468498f97946200806f7.r2.dev/hackline/hack-western.png",
-      mlh: "https://s3.amazonaws.com/logged-assets/trust-badge/2019/mlh-trust-badge-2019-white.svg",
+        "",
+      mlh: "",
       links: [],
     },
     {
-      title: "Hack The North",
+      title: "Robotics Workshop and Competition ",
       dates: "September 14th - 16th, 2018",
-      location: "Waterloo, Ontario",
+      location: "Conference Hall, Alaminos City Hall",
       description:
-        "Developed a mobile application which delivers university campus wide events in real time to all students.",
+        "Developed a robot that can navigate through a maze and solve puzzles.",
       image:
-        "https://pub-83c5db439b40468498f97946200806f7.r2.dev/hackline/hack-the-north.png",
-      mlh: "https://s3.amazonaws.com/logged-assets/trust-badge/2019/mlh-trust-badge-2019-white.svg",
+        "",
+      mlh: "",
       links: [],
     },
   ],
