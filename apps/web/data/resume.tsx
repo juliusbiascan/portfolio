@@ -70,16 +70,16 @@ export const DATA = {
   },
   work: [
     {
-      company: "Mitre Media",
-      href: "https://mitremedia.com/",
+      company: "Hire me ",
+      href: "https://juliusbiascan.me/",
       badges: [],
-      location: "Toronto, ON",
+      location: "Pangasinan, Philippines",
       title: "Software Engineer",
-      logoUrl: "/mitremedia.png",
+      logoUrl: "/hireme.png",
       start: "September 2025",
       end: null,
       description:
-        "Designed and implemented a robust password encryption and browser cookie storage system in Ruby on Rails. Leveraged the Yahoo finance API to develop the dividend.com equity screener",
+        "I dont have a job yet, but I'm looking for one. please hire me.",
     },
   ],
   education: [

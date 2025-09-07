@@ -72,7 +72,7 @@ export default function Page() {
                 <img
                   src={item.image}
                   alt={item.alt}
-                  className="relative w-full h-96 object-contain rounded-lg transition-all duration-300 group-hover:scale-105"
+                  className="relative w-full h-24 sm:h-28 md:h-32 lg:h-36 xl:h-40 object-contain rounded-lg transition-all duration-300 group-hover:scale-105"
                 />
               </div>
             ))}
