@@ -94,9 +94,41 @@ export const DATA = {
   ],
   projects: [
     {
+      title: "Vibe AI Website Builder",
+      href: "https://vibe.juliusbiascan.me",
+      dates: "Sep 2025",
+      active: true,
+      description:
+        "AI website builder SaaS on Next.js 15—generate and manage sites with Prisma/Postgres, tRPC, Clerk, Inngest, and a React 19 + Tailwind UI featuring dashboards, AI messaging, sandbox previews, and usage tracking.",
+      technologies: [
+        "Next.js 15",
+        "React",
+        "Inngest",
+        "Prisma",
+        "E2B",
+        "Shadcn UI",
+        "Typescript",
+      ],
+      links: [
+        {
+          type: "Website",
+          href: "https://github.com/juliusbiascan/vibe",
+          icon: <Icons.github className="size-3" />,
+        },
+        {
+          type: "Website",
+          href: "https://vibe.juliusbiascan.me",
+          icon: <Icons.globe className="size-3" />,
+        },
+      ],
+      image: "",
+      video:
+        "https://r2.juliusbiascan.me/vibe.mp4",
+    },
+    {
       title: "Echo Support Agent",
       href: "https://echo.juliusbiascan.me",
-      dates: "Sep 2025 - Present",
+      dates: "Sep 2025",
       active: true,
       description:
         "Introducing Echo a B2B SaaS AI powered support platform inspired by Intercom, Crisp, and Zendesk.",
@@ -124,7 +156,7 @@ export const DATA = {
     {
       title: "Paywall",
       href: "https://paywall.juliusbiascan.me/",
-      dates: "Sep 2025 - Present",
+      dates: "May 2025",
       active: true,
       description:
         "This project is a modern finance management web application built with Next.js, TypeScript, and Tailwind CSS. It features user authentication, dashboard analytics, account and transaction management, category organization, and data visualization. The app uses Drizzle ORM for database interactions and provides a clean, responsive UI for tracking and",
